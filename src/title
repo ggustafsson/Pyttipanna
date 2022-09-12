@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Description: Reformats text following English title capitalization rules.
-# Takes input text through arguments or STDIN and prints titelized version.
+# Takes input text through arguments or STDIN and prints titleized version.
 #
 # Lowercase:
 #
@@ -42,6 +42,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    # Do not print traceback after ^C exit.
     except KeyboardInterrupt:
         print()

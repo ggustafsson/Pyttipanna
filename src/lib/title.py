@@ -17,7 +17,7 @@ Example:
 
 Usage:
 
-    title.titelize(string)
+    title.titleize(string)
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
 License: BSD 3-Clause
