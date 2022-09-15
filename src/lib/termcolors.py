@@ -24,7 +24,7 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class Attr:
-    """Terminal attributes."""
+    """Terminal style attributes."""
 
     if sys.stdout.isatty():
         Reset     = "\033[0m"
