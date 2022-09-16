@@ -141,7 +141,7 @@ def main():
             if os.path.isdir(f"{dir_.path}/.git"):
                 repos.append(git_status(dir_))
 
-    print(f"{Fg.BrightCyan}{dir_name}:{Attr.Reset}")
+    print(f"{Fg.BrightCyan}Git @ {dir_name}:{Attr.Reset}")
     if len(repos) > 0:
         git_table(repos)
     else:
