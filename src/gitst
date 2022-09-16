@@ -109,7 +109,7 @@ def git_table(repos: list):
 
     column = len(max((repo["name"] for repo in repos), key=len)) + 2
 
-    for repo in (sorted(repos, key=lambda d: d["name"])):
+    for repo in sorted(repos, key=lambda d: d["name"]):
         print(f"{repo['name']:<{column}}", end="")
         if repo["dirty"]:
             print(f"{Fg.BrightRed}{repo['branch']}*{Attr.Reset}")
@@ -121,17 +121,15 @@ def git_table(repos: list):
 
 def main():
     args = setup_args()
-
-    dir_path = args.path
-    dir_name = os.path.basename(os.path.abspath(dir_path))
+    dir_name = os.path.basename(os.path.abspath(args.path))
     repos = []
 
-    if not os.path.isdir(dir_path):
-        print(f"Directory '{dir_path}' not found! Exiting...")
+    if not os.path.isdir(args.path):
+        print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
     if args.sub_level:
-        for dir_ in os.scandir(dir_path):
+        for dir_ in os.scandir(args.path):
             if not os.path.isdir(dir_.path):
                 continue
 
@@ -139,7 +137,7 @@ def main():
                 if os.path.isdir(f"{subdir.path}/.git"):
                     repos.append(git_status(subdir, sub=True))
     else:
-        for dir_ in os.scandir(dir_path):
+        for dir_ in os.scandir(args.path):
             if os.path.isdir(f"{dir_.path}/.git"):
                 repos.append(git_status(dir_))
 
