@@ -48,7 +48,7 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def status(dir_: os.DirEntry, sub: bool = False) -> dict:
+def git_status(dir_: os.DirEntry, sub: bool = False) -> dict:
     """Check Git repo status.
 
     Retrieve information about current branch and state (dirty/unpushed).
@@ -96,7 +96,7 @@ def status(dir_: os.DirEntry, sub: bool = False) -> dict:
             "unpushed": unpushed}
 
 
-def summary(repos: list):
+def git_table(repos: list):
     """Print summary table of Git repos.
 
     State of repo is indicated through colors green (clean), yellow (unpushed)
@@ -137,15 +137,15 @@ def main():
 
             for subdir in os.scandir(dir_.path):
                 if os.path.isdir(f"{subdir.path}/.git"):
-                    repos.append(status(subdir, sub=True))
+                    repos.append(git_status(subdir, sub=True))
     else:
         for dir_ in os.scandir(dir_path):
             if os.path.isdir(f"{dir_.path}/.git"):
-                repos.append(status(dir_))
+                repos.append(git_status(dir_))
 
     print(f"{Fg.BrightCyan}{dir_name}:{Attr.Reset}")
     if len(repos) > 0:
-        summary(repos)
+        git_table(repos)
     else:
         print("No Git repos found...")
 
