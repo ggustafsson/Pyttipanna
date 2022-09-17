@@ -1,0 +1,104 @@
+#!/usr/bin/env python3
+
+# Description: Updates all Git repos found in specific directory, or all Git
+# repos found one sub-level down.
+#
+# Example:
+#
+#     Updating Git repos under '/Users/GLEG/Projects'...
+#
+#     Ansiblebot:
+#     Already up to date.
+#
+#     Pyttipanna:
+#     error: cannot pull with rebase: You have unstaged changes.
+#     error: please commit or stash them.
+#
+#     ...
+#
+# Dependencies: pytt.py + termcolors.py
+#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/pytt.py
+#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/termcolors.py
+#
+# Usage: gitpl
+#
+# Author: Göran Gustafsson <gustafsson.g@gmail.com>
+# License: BSD 3-Clause
+
+import argparse
+import os
+import subprocess
+import sys
+
+from lib.pytt import git_find
+from lib.termcolors import Attr, Fg
+
+
+def setup_args() -> argparse.Namespace:
+    """Configure argument parsing."""
+
+    parser = argparse.ArgumentParser(
+        description="Update Git repos under directory."
+    )
+    parser.add_argument(
+        "-p", "--path",
+        default=os.path.expanduser("~/Projects"),
+        help="directory to search (default: ~/Projects)"
+    )
+    parser.add_argument(
+        "-s", "--sub-level",
+        action="store_true",
+        help="search one sub-level down (default: off)"
+    )
+    return parser.parse_args()
+
+
+def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
+    """Fetch Git repo updates.
+
+    Executes "git pull" and prints command output.
+
+    Arguments:
+        repo_dir: os.DirEntry containing Git repo directory.
+        sub_level: bool that sets if name should contain parent directory.
+    """
+
+    if sub_level:
+        path = str(repo_dir.path).split(os.sep)
+        name = f"{path[-2]}/{path[-1]}"
+    else:
+        name = repo_dir.name
+
+    proc = subprocess.run(
+        ["git", "-C", repo_dir.path, "pull"],
+        capture_output=True,
+        check=False
+    )
+
+    print(f"\n{Fg.BrightCyan}{name}:{Attr.Reset}")
+    if len(proc.stdout) > 1:
+        print(proc.stdout.decode().strip())
+    if len(proc.stderr) > 1:
+        print(proc.stderr.decode().strip())
+
+
+def main():
+    args = setup_args()
+
+    if not os.path.isdir(args.path):
+        print(f"Directory '{args.path}' not found! Exiting...")
+        sys.exit(1)
+
+    print(f"Updating Git repos under '{args.path}'...")
+
+    repos = git_find(args.path, args.sub_level)
+    # FIXME: async git_pull tasks!
+    for repo in sorted(repos, key=lambda d: d.name):
+        git_pull(repo, args.sub_level)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except KeyboardInterrupt:
+        print()
