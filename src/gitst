@@ -7,13 +7,14 @@
 #
 # Example:
 #
-#     Projects:
+#     Git @ Projects:
 #     Ansiblebot      master
 #     Dotfiles        master*
 #     Project-Assets  master
 #     ...
 #
-# Dependencies: termcolors
+# Dependencies: pytt.py + termcolors.py
+#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/pytt.py
 #     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/termcolors.py
 #
 # Usage: gitst
@@ -26,6 +27,7 @@ import os
 import subprocess
 import sys
 
+from lib.pytt import git_find
 from lib.termcolors import Attr, Fg
 
 
@@ -48,35 +50,35 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def git_status(dir_: os.DirEntry, sub: bool = False) -> dict:
+def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> dict:
     """Check Git repo status.
 
     Retrieve information about current branch and state (dirty/unpushed).
 
     Arguments:
-        dir_: os.DirEntry containing Git repo directory.
-        sub: bool that sets if name should contain parent directory.
+        repo_dir: os.DirEntry containing Git repo directory.
+        sub_level: bool that sets if name should contain parent directory.
 
     Returns:
         dict containing Git repo status.
         {'name': 'x', 'branch': 'y', 'dirty': False, 'unpushed': False}
     """
 
-    if sub:
-        path = str(dir_.path).split(os.sep)
+    if sub_level:
+        path = str(repo_dir.path).split(os.sep)
         name = f"{path[-2]}/{path[-1]}"
     else:
-        name = dir_.name
+        name = repo_dir.name
 
     proc = subprocess.run(
-        ["git", "-C", dir_.path, "branch", "--show-current"],
+        ["git", "-C", repo_dir.path, "branch", "--show-current"],
         capture_output=True,
         check=False
     )
     branch = proc.stdout.decode().strip()
 
     proc = subprocess.run(
-        ["git", "-C", dir_.path, "status", "--porcelain"],
+        ["git", "-C", repo_dir.path, "status", "--porcelain"],
         capture_output=True,
         check=False
     )
@@ -84,7 +86,7 @@ def git_status(dir_: os.DirEntry, sub: bool = False) -> dict:
 
     if not dirty:
         proc = subprocess.run(
-            ["git", "-C", dir_.path, "log", "@{upstream}.."],
+            ["git", "-C", repo_dir.path, "log", "@{upstream}.."],
             capture_output=True,
             check=False
         )
@@ -121,29 +123,21 @@ def git_table(repos: list):
 
 def main():
     args = setup_args()
-    dir_name = os.path.basename(os.path.abspath(args.path))
-    repos = []
 
     if not os.path.isdir(args.path):
         print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
-    if args.sub_level:
-        for dir_ in os.scandir(args.path):
-            if not os.path.isdir(dir_.path):
-                continue
-
-            for subdir in os.scandir(dir_.path):
-                if os.path.isdir(f"{subdir.path}/.git"):
-                    repos.append(git_status(subdir, sub=True))
-    else:
-        for dir_ in os.scandir(args.path):
-            if os.path.isdir(f"{dir_.path}/.git"):
-                repos.append(git_status(dir_))
-
+    dir_name = os.path.basename(os.path.abspath(args.path))
     print(f"{Fg.BrightCyan}Git @ {dir_name}:{Attr.Reset}")
+
+    repos = git_find(args.path, args.sub_level)
+    states = []
+    for repo in repos:
+        states.append(git_status(repo, args.sub_level))
+
     if len(repos) > 0:
-        git_table(repos)
+        git_table(states)
     else:
         print("No Git repos found...")
 
