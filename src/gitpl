@@ -92,9 +92,12 @@ def main():
     print(f"Updating Git repos under '{args.path}'...")
 
     repos = git_find(args.path, args.sub_level)
-    # FIXME: async git_pull tasks!
-    for repo in sorted(repos, key=lambda d: d.name):
-        git_pull(repo, args.sub_level)
+    if len(repos) > 0:
+        for repo in repos:
+            # FIXME: async git_pull tasks!
+            git_pull(repo, args.sub_level)
+    else:
+        print("No Git repos found...")
 
 
 if __name__ == "__main__":
