@@ -111,7 +111,7 @@ def git_table(repos: list):
 
     column = len(max((repo["name"] for repo in repos), key=len)) + 2
 
-    for repo in sorted(repos, key=lambda d: d["name"]):
+    for repo in repos:
         print(f"{repo['name']:<{column}}", end="")
         if repo["dirty"]:
             print(f"{Fg.BrightRed}{repo['branch']}*{Attr.Reset}")
@@ -128,8 +128,7 @@ def main():
         print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
-    dir_name = os.path.basename(os.path.abspath(args.path))
-    print(f"{Fg.BrightCyan}Git @ {dir_name}:{Attr.Reset}")
+    print(f"{Fg.BrightCyan}{args.path}:{Attr.Reset}")
 
     repos = git_find(args.path, args.sub_level)
     states = []
