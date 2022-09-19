@@ -26,7 +26,7 @@ def git_find(dir_: str, sub_level: bool = False) -> list:
         sub_level: bool that sets if sub-level directories should be searched.
 
     Returns:
-        list containing Git repo directories.
+        list containing Git repo directories sorted by path.
     """
 
     result = []
@@ -42,4 +42,4 @@ def git_find(dir_: str, sub_level: bool = False) -> list:
         for subdir in os.scandir(dir_):
             if os.path.isdir(f"{subdir.path}/.git"):
                 result.append(subdir)
-    return result
+    return sorted(result, key=lambda l: l.path)
