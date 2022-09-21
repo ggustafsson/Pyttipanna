@@ -36,10 +36,10 @@ def git_find(dir_: str, sub_level: bool = False) -> list:
                 continue
 
             for subdir2 in os.scandir(subdir.path):
-                if os.path.isdir(f"{subdir2.path}/.git"):
+                if os.path.isdir(f"{subdir2.path}{os.sep}.git"):
                     result.append(subdir2)
     else:
         for subdir in os.scandir(dir_):
-            if os.path.isdir(f"{subdir.path}/.git"):
+            if os.path.isdir(f"{subdir.path}{os.sep}.git"):
                 result.append(subdir)
     return sorted(result, key=lambda l: l.path)
