@@ -133,11 +133,10 @@ def main():
     print(f"{Fg.BrightCyan}{args.path}:{Attr.Reset}")
 
     repos = git_find(args.path, args.sub_level)
-    states = []
-    for repo in repos:
-        states.append(git_status(repo, args.sub_level))
-
     if len(repos) > 0:
+        states = []
+        for repo in repos:
+            states.append(git_status(repo, args.sub_level))
         git_table(states)
     else:
         print("No Git repos found...")
