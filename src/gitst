@@ -27,6 +27,8 @@ import os
 import subprocess
 import sys
 
+from collections import namedtuple
+
 from lib.pytt import git_find
 from lib.termcolors import Attr, Fg
 
@@ -50,7 +52,7 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> dict:
+def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
     """Check Git repo status.
 
     Retrieve information about current branch and state (dirty/unpushed).
@@ -60,8 +62,8 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> dict:
         sub_level: bool that sets if name should contain parent directory.
 
     Returns:
-        dict containing Git repo status.
-        {'name': 'x', 'branch': 'y', 'dirty': False, 'unpushed': False}
+        namedtuple containing Git repo status.
+        repo(name='x', branch='y', dirty=False, unpushed=False)
     """
 
     if sub_level:
@@ -94,8 +96,8 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> dict:
     else:
         unpushed = False
 
-    return {"name": name, "branch": branch, "dirty": dirty,
-            "unpushed": unpushed}
+    repo = namedtuple("repo", "name branch dirty unpushed")
+    return repo(name=name, branch=branch, dirty=dirty, unpushed=unpushed)
 
 
 def git_table(repos: list):
@@ -109,16 +111,16 @@ def git_table(repos: list):
         repos: list containing dict's with Git repo states.
     """
 
-    column = len(max((repo["name"] for repo in repos), key=len)) + 2
+    column = len(max((repo.name for repo in repos), key=len)) + 2
 
     for repo in repos:
-        print(f"{repo['name']:<{column}}", end="")
-        if repo["dirty"]:
-            print(f"{Fg.BrightRed}{repo['branch']}*{Attr.Reset}")
-        elif repo["unpushed"]:
-            print(f"{Fg.BrightYellow}{repo['branch']}+{Attr.Reset}")
+        print(f"{repo.name:<{column}}", end="")
+        if repo.dirty:
+            print(f"{Fg.BrightRed}{repo.branch}*{Attr.Reset}")
+        elif repo.unpushed:
+            print(f"{Fg.BrightYellow}{repo.branch}+{Attr.Reset}")
         else:
-            print(f"{Fg.BrightGreen}{repo['branch']}{Attr.Reset}")
+            print(f"{Fg.BrightGreen}{repo.branch}{Attr.Reset}")
 
 
 def main():
