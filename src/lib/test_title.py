@@ -14,7 +14,7 @@ class TestTitle(unittest.TestCase):
         string = "göran's top secret quote & å ä ö test..."
         expect = "Göran's Top Secret Quote & Å Ä Ö Test..."
         #          ^^  ^^                    ^ ^ ^
-        self.assertEqual(title.titleize(string), expect)
+        self.assertEqual(title.title(string), expect)
 
     def test_titleize(self):
         """Validate title.titleize() results."""

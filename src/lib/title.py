@@ -65,8 +65,6 @@ def titleize(text: str) -> str:
     words = text.split()
     last_word = len(words) - 1
     skip_next = False
-
-    # Appending to new list is more efficient than updating existing list.
     result = []
 
     for index, word in enumerate(words):
