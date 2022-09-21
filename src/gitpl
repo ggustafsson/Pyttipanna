@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 # Description: Updates all Git repos found in specific directory, or all Git
-# repos found one sub-level down.
+# repos found one sub-level down. Fetching is done asynchronously to avoid risk
+# of falling asleep hence order is seemingly random.
 #
 # Example:
 #
@@ -26,8 +27,8 @@
 # License: BSD 3-Clause
 
 import argparse
+import asyncio
 import os
-import subprocess
 import sys
 
 from lib.pytt import git_find
@@ -53,7 +54,7 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
+async def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
     """Fetch Git repo updates.
 
     Executes "git pull" and prints command output.
@@ -65,24 +66,24 @@ def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
 
     if sub_level:
         path = str(repo_dir.path).split(os.sep)
-        name = f"{path[-2]}/{path[-1]}"
+        name = f"{path[-2]}{os.sep}{path[-1]}"
     else:
         name = repo_dir.name
 
-    proc = subprocess.run(
-        ["git", "-C", repo_dir.path, "pull"],
-        capture_output=True,
-        check=False
-    )
+    proc = await asyncio.create_subprocess_shell(
+        f"git -C {repo_dir.path} pull",
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await proc.communicate()
 
     print(f"\n{Fg.BrightCyan}{name}:{Attr.Reset}")
-    if len(proc.stdout) > 1:
-        print(proc.stdout.decode().strip())
-    if len(proc.stderr) > 1:
-        print(proc.stderr.decode().strip())
+    if len(stdout) > 1:
+        print(stdout.decode().strip())
+    if len(stderr) > 1:
+        print(stderr.decode().strip())
 
 
-def main():
+async def main():
     args = setup_args()
 
     if not os.path.isdir(args.path):
@@ -93,15 +94,16 @@ def main():
 
     repos = git_find(args.path, args.sub_level)
     if len(repos) > 0:
+        tasks = []
         for repo in repos:
-            # FIXME: async git_pull tasks!
-            git_pull(repo, args.sub_level)
+            tasks.append(git_pull(repo, args.sub_level))
+        await asyncio.gather(*tasks)
     else:
         print("No Git repos found...")
 
 
 if __name__ == "__main__":
     try:
-        main()
+        asyncio.run(main())
     except KeyboardInterrupt:
         print()
