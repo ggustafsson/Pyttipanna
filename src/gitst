@@ -134,9 +134,7 @@ def main():
 
     repos = git_find(args.path, args.sub_level)
     if len(repos) > 0:
-        states = []
-        for repo in repos:
-            states.append(git_status(repo, args.sub_level))
+        states = [git_status(repo, args.sub_level) for repo in repos]
         git_table(states)
     else:
         print("No Git repos found...")
