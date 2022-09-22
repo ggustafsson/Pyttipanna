@@ -88,7 +88,7 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
 
     if not dirty:
         proc = subprocess.run(
-            ["git", "-C", repo_dir.path, "log", "@{upstream}.."],
+            ["git", "-C", repo_dir.path, "log", "-n", "1", "@{upstream}.."],
             capture_output=True,
             check=False
         )
