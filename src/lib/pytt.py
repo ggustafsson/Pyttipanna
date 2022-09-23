@@ -29,8 +29,8 @@ def git_find(dir_: str, sub_level: bool = False) -> tuple:
         tuple containing Git repo directories sorted by path.
     """
 
-    result = []
     if sub_level:
+        result = []
         for subdir in os.scandir(dir_):
             if not os.path.isdir(subdir.path):
                 continue
@@ -39,7 +39,8 @@ def git_find(dir_: str, sub_level: bool = False) -> tuple:
                 if os.path.isdir(f"{subdir2.path}{os.sep}.git"):
                     result.append(subdir2)
     else:
-        for subdir in os.scandir(dir_):
-            if os.path.isdir(f"{subdir.path}{os.sep}.git"):
-                result.append(subdir)
+        result = [
+            subdir for subdir in os.scandir(dir_)
+            if os.path.isdir(f"{subdir.path}{os.sep}.git")
+        ]
     return tuple(sorted(result, key=lambda l: l.path))
