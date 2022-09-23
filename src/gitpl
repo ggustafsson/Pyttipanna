@@ -31,7 +31,7 @@ import asyncio
 import os
 import sys
 
-from lib.pytt import git_find
+from lib import pytt
 from lib.termcolors import Attr, Fg
 
 
@@ -92,7 +92,7 @@ async def main():
 
     print(f"Updating Git repos under '{args.path}'...")
 
-    repos = git_find(args.path, args.sub_level)
+    repos = pytt.git_find(args.path, args.sub_level)
     if len(repos) > 0:
         tasks = [git_pull(repo, args.sub_level) for repo in repos]
         await asyncio.gather(*tasks)
