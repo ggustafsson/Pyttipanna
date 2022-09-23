@@ -5,7 +5,9 @@ enough to not warrant its own module.
 
 Usage:
 
-    from lib.pytt import x
+    from lib import pytt
+
+    pytt.x()
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
 License: BSD 3-Clause
