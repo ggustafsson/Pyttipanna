@@ -29,7 +29,7 @@ import sys
 
 from collections import namedtuple
 
-from lib.pytt import git_find
+from lib import pytt
 from lib.termcolors import Attr, Fg
 
 
@@ -132,7 +132,7 @@ def main():
 
     print(f"{Fg.BrightCyan}{args.path}:{Attr.Reset}")
 
-    repos = git_find(args.path, args.sub_level)
+    repos = pytt.git_find(args.path, args.sub_level)
     if len(repos) > 0:
         states = [git_status(repo, args.sub_level) for repo in repos]
         git_table(states)
