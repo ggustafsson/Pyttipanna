@@ -17,6 +17,8 @@ Example:
 
 Usage:
 
+    from lib import title
+
     title.titleize(string)
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
