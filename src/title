@@ -25,18 +25,18 @@
 
 import sys
 
-from lib.title import titleize
+from lib import title
 
 
 def main():
     if len(sys.argv) > 1:
         # When executed as: title <text>
         text = str.join(" ", sys.argv[1:])
-        print(titleize(text))
+        print(title.titleize(text))
     else:
         # When executed as: title < <file>
         for line in sys.stdin:
-            print(titleize(line))
+            print(title.titleize(line))
 
 
 if __name__ == "__main__":
