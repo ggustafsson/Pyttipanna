@@ -22,6 +22,7 @@
 #     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/termcolors.py
 #
 # Usage: gitpl
+#        gitpl --help
 #
 # Author: Göran Gustafsson <gustafsson.g@gmail.com>
 # License: BSD 3-Clause
