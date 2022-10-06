@@ -62,6 +62,12 @@ class TestTitle(unittest.TestCase):
         #               ^^^              ^^^      ^^^^^
         self.assertEqual(title.titleize(string), expect)
 
+        # Song/album test 5.
+        string = "sepultura - r.i.p. (rest in pain)"
+        expect = "Sepultura - R.I.P. (Rest in Pain)"
+        #                       ^^^        ^^
+        self.assertEqual(title.titleize(string), expect)
+
 
 if __name__ == "__main__":
     unittest.main()
