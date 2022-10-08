@@ -81,7 +81,7 @@ def titleize(text: str) -> str:
         # 3. Titlecase everything else.
         if index in (0, last_word):
             result.append(title(word))
-        elif str.lower(word) in _lowercase and not skip:
+        elif not skip and str.lower(word) in _lowercase:
             result.append(word.lower())
         else:
             result.append(title(word))
