@@ -76,12 +76,10 @@ def titleize(text: str) -> str:
         # Check if next iteration should be treated as new sentence.
         skip_next = bool(word[-1] in _end_sentence)
 
-        # 1. Titlecase first and last word.
-        # 2. Lowercase word unless new sentence.
-        # 3. Titlecase everything else.
-        if index in (0, last_word):
+        # Check if new sentence, first word or last word first.
+        if skip or index in (0, last_word):
             result.append(title(word))
-        elif not skip and str.lower(word) in _lowercase:
+        elif str.lower(word) in _lowercase:
             result.append(word.lower())
         else:
             result.append(title(word))
