@@ -21,7 +21,7 @@ class TestTitle(unittest.TestCase):
 
         # Test if all words in _lowercase list gets lowered.
         lower = str.join(" ", title._lowercase)
-        string = f"first {lower} last"
+        string = f"FIRST {str.upper(lower)} LAST"
         expect = f"First {lower} Last"
         self.assertEqual(title.titleize(string), expect)
 
