@@ -12,9 +12,9 @@ class TestTitle(unittest.TestCase):
 
         # Test if endings with "'s", punctuated abbreviations and chars "åäö"
         # are handled correctly.
-        string = "göran's secret quote, a.b.r. & åå ää öö test..."
-        expect = "Göran's Secret Quote, A.B.R. & Åå Ää Öö Test..."
-        #          ^^  ^^               ^^^^^    ^^ ^^ ^^
+        string = "göran's secret quote, a.b.r. and åå ää öö test..."
+        expect = "Göran's Secret Quote, A.B.R. And Åå Ää Öö Test..."
+        #          ^^  ^^                 ^ ^      ^^ ^^ ^^
         self.assertEqual(title.title(string), expect)
 
     def test_titleize(self):
@@ -29,6 +29,16 @@ class TestTitle(unittest.TestCase):
         lower = str.join(" ", title._lowercase)
         string = f"FIRST {str.upper(lower)} LAST"
         expect = f"First {lower} Last"
+        self.assertEqual(title.titleize(string), expect)
+
+        # Test if punctuated abbreviation does not trigger new sentence.
+        string = "first a.b.r. the last"
+        expect = "First A.B.R. the Last"
+        self.assertEqual(title.titleize(string), expect)
+
+        # Test if punctuated digits does trigger new sentence.
+        string = "first 1.2.3. the last"
+        expect = "First 1.2.3. The Last"
         self.assertEqual(title.titleize(string), expect)
 
         # Test if all chars in _end_sentence list triggers new sentence.
