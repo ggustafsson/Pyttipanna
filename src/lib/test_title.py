@@ -19,6 +19,11 @@ class TestTitle(unittest.TestCase):
     def test_titleize(self):
         """Validate title.titleize() results."""
 
+        # Test if first and last word gets titlecased.
+        string = "the the the"
+        expect = "The the The"
+        self.assertEqual(title.titleize(string), expect)
+
         # Test if all words in _lowercase list gets lowered.
         lower = str.join(" ", title._lowercase)
         string = f"FIRST {str.upper(lower)} LAST"
