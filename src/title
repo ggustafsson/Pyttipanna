@@ -3,6 +3,8 @@
 # Description: Reformats text following English title capitalization rules.
 # Takes input text through arguments or STDIN and prints titleized version.
 #
+# Implementation details and caveats can be found in library source code.
+#
 # Lowercase:
 #
 #     a, an, and, as, at, but, by, en, etc, for, from,
