@@ -10,10 +10,11 @@ class TestTitle(unittest.TestCase):
     def test_title(self):
         """Validate title.title() results."""
 
-        # Test if endings with "'s" and chars "åäö" are handled correctly.
-        string = "göran's top secret quote & å ä ö test..."
-        expect = "Göran's Top Secret Quote & Å Ä Ö Test..."
-        #          ^^  ^^                    ^ ^ ^
+        # Test if endings with "'s", punctuated abbreviations and chars "åäö"
+        # are handled correctly.
+        string = "göran's secret quote, a.b.r. & åå ää öö test..."
+        expect = "Göran's Secret Quote, A.B.R. & Åå Ää Öö Test..."
+        #          ^^  ^^               ^^^^^    ^^ ^^ ^^
         self.assertEqual(title.title(string), expect)
 
     def test_titleize(self):
