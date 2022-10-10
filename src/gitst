@@ -13,9 +13,10 @@
 #     Project-Assets  master
 #     ...
 #
-# Dependencies: pytt.py + termcolors.py
+# Dependencies:
+#
+#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/colors.py
 #     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/pytt.py
-#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/termcolors.py
 #
 # Usage: gitst
 #        gitst --help
@@ -31,7 +32,7 @@ import sys
 from collections import namedtuple
 
 from lib import pytt
-from lib.termcolors import Attr, Fg
+from lib.colors import Attr, Fg
 
 
 def setup_args() -> argparse.Namespace:

@@ -17,9 +17,10 @@
 #
 #     ...
 #
-# Dependencies: pytt.py + termcolors.py
+# Dependencies:
+#
+#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/colors.py
 #     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/pytt.py
-#     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/termcolors.py
 #
 # Usage: gitpl
 #        gitpl --help
@@ -33,7 +34,7 @@ import os
 import sys
 
 from lib import pytt
-from lib.termcolors import Attr, Fg
+from lib.colors import Attr, Fg
 
 
 def setup_args() -> argparse.Namespace:

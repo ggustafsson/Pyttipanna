@@ -7,7 +7,7 @@ during redirection or piping.
 
 Usage:
 
-    from lib.termcolors import Attr, Fg
+    from lib.colors import Attr, Fg
 
     print(f"{Fg.BrightRed}Hello, 世界{Attr.Reset}")
 

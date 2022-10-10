@@ -15,7 +15,8 @@
 #     $ title "tears for fears @ rule the world: the greatest hits"
 #     Tears for Fears @ Rule the World: The Greatest Hits
 #
-# Dependencies: title
+# Dependencies:
+#
 #     https://github.com/ggustafsson/Pyttipanna/blob/master/src/lib/title.py
 #
 # Usage: title <text>
