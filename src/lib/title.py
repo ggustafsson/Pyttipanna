@@ -70,6 +70,10 @@ def titleize(text: str) -> str:
     skip_next = False
     result = []
 
+    # Regex matching "A.Z." (or longer) abbreviation patterns.
+    # XXX: Using [^\W\d_] because \w matches digits and underscore.
+    abbrev = re.compile(r"^([^\W\d_]{1}\.){2,}$")
+
     for index, word in enumerate(words):
         # Check if current iteration should be treated as new sentence.
         skip = bool(skip_next)
@@ -78,12 +82,8 @@ def titleize(text: str) -> str:
         skip_next = bool(word[-1] in _end_sentence)
 
         # Check if end of sentence or punctuated abbreviation.
-        if word[-1] == ".":
-            # Match "A.Z." (or longer) abbreviation patterns.
-            # XXX: Using [^\W\d_] because \w matches digits and underscore.
-            pattern = re.compile(r"^([^\W\d_]{1}\.){2,}$")
-            if pattern.match(word):
-                skip_next = False
+        if word[-1] == "." and abbrev.match(word):
+            skip_next = False
 
         # Check if new sentence, first word or last word first.
         if skip or index in (0, last_word):
