@@ -68,7 +68,6 @@ def titleize(text: str) -> str:
     words = text.split()
     last_word = len(words) - 1
     skip_next = False
-    result = []
 
     # Regex matching "A.Z." (or longer) abbreviation patterns.
     # XXX: Using [^\W\d_] because \w matches digits and underscore.
@@ -87,10 +86,10 @@ def titleize(text: str) -> str:
 
         # Check if new sentence, first word or last word first.
         if skip or index in (0, last_word):
-            result.append(title(word))
+            words[index] = title(word)
         elif str.lower(word) in _lowercase:
-            result.append(word.lower())
+            words[index] = word.lower()
         else:
-            result.append(title(word))
+            words[index] = title(word)
 
-    return str.join(" ", result)
+    return str.join(" ", words)
