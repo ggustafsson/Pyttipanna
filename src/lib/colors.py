@@ -109,7 +109,7 @@ if sys.stdout.isatty() and os.getenv("NO_COLOR") is None:
         bright_white   = "\033[97m",
     )
 else:
-    # Use default type values, i.e. empty strings.
+    # Use default values, i.e. empty strings.
     attr = Attributes()
     bg = Colors()
     fg = Colors()
