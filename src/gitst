@@ -32,7 +32,7 @@ import sys
 from collections import namedtuple
 
 from lib import pytt
-from lib.colors import Attr, Fg
+from lib.colors import attr, fg
 
 
 def setup_args() -> argparse.Namespace:
@@ -118,11 +118,11 @@ def git_table(repos: list):
     for repo in repos:
         print(f"{repo.name:<{column}}", end="")
         if repo.dirty:
-            print(f"{Fg.BrightRed}{repo.branch}*{Attr.Reset}")
+            print(f"{fg.bright_red}{repo.branch}*{attr.reset}")
         elif repo.unpushed:
-            print(f"{Fg.BrightYellow}{repo.branch}+{Attr.Reset}")
+            print(f"{fg.bright_yellow}{repo.branch}+{attr.reset}")
         else:
-            print(f"{Fg.BrightGreen}{repo.branch}{Attr.Reset}")
+            print(f"{fg.bright_green}{repo.branch}{attr.reset}")
 
 
 def main():
@@ -132,7 +132,7 @@ def main():
         print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
-    print(f"{Fg.BrightCyan}{args.path}:{Attr.Reset}")
+    print(f"{fg.bright_cyan}{args.path}:{attr.reset}")
 
     repos = pytt.git_find(args.path, args.sub_level)
     if len(repos) > 0:

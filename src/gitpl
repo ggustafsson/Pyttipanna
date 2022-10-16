@@ -34,7 +34,7 @@ import os
 import sys
 
 from lib import pytt
-from lib.colors import Attr, Fg
+from lib.colors import attr, fg
 
 
 def setup_args() -> argparse.Namespace:
@@ -78,7 +78,7 @@ async def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
         stderr=asyncio.subprocess.PIPE)
     stdout, stderr = await proc.communicate()
 
-    print(f"\n{Fg.BrightCyan}{name}:{Attr.Reset}")
+    print(f"\n{fg.bright_cyan}{name}:{attr.reset}")
     if len(stdout) > 1:
         print(stdout.decode().strip())
     if len(stderr) > 1:
