@@ -27,12 +27,12 @@ from dataclasses import dataclass
 class Attributes:
     """Terminal style attributes."""
 
-    reset:     str = ""
+    blink:     str = ""
     bold:      str = ""
     italic:    str = ""
-    underline: str = ""
-    blink:     str = ""
+    reset:     str = ""
     reverse:   str = ""
+    underline: str = ""
 
 
 @dataclass(frozen=True)
@@ -40,22 +40,22 @@ class Colors:
     """Terminal background & foreground colors."""
 
     black:   str = ""
-    red:     str = ""
-    green:   str = ""
-    yellow:  str = ""
     blue:    str = ""
-    magenta: str = ""
     cyan:    str = ""
+    green:   str = ""
+    magenta: str = ""
+    red:     str = ""
     white:   str = ""
+    yellow:  str = ""
 
     bright_black:   str = ""
-    bright_red:     str = ""
-    bright_green:   str = ""
-    bright_yellow:  str = ""
     bright_blue:    str = ""
-    bright_magenta: str = ""
     bright_cyan:    str = ""
+    bright_green:   str = ""
+    bright_magenta: str = ""
+    bright_red:     str = ""
     bright_white:   str = ""
+    bright_yellow:  str = ""
 
 
 # Check if running inside of TTY and if NO_COLOR is not set.
