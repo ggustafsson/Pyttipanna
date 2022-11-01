@@ -1,15 +1,67 @@
-"""Terminal colors module.
+"""Terminal colors library.
 
-Contains terminal color and attribute values for convenient use. ANSI 16 colors
-and basic style attributes only. All values are set to empty string if NO_COLOR
-environment variable is set or if program is not running inside of interactive
-TTY, i.e. colors are automatically disabled during redirection or piping.
+Contains functions that generate data structure with preset terminal color and
+attribute string values to allow for easy use with standard print functions.
+ANSI 16 colors and basic style attributes only. By default all values are set
+to empty string if 'NO_COLOR' environment variable is set or if program is not
+running inside of interactive TTY, i.e. colors are automatically disabled
+during redirection or piping.
+
+Use function init_auto() for recommended default behaviour. Functions init_on()
+and init_off() can be used to enforce specific behaviour, e.g. to support
+implementation of '--color=on/off' argument.
+
+Structure:
+
+    colors
+    |-- attr
+    |   |-- blink
+    |   |-- bold
+    |   |-- italic
+    |   |-- reset
+    |   |-- reverse
+    |   `-- underline
+    |-- bg
+    |   |-- black
+    |   |-- blue
+    |   |-- cyan
+    |   |-- green
+    |   |-- magenta
+    |   |-- red
+    |   |-- white
+    |   |-- yellow
+    |   |-- bright_black
+    |   |-- bright_blue
+    |   |-- bright_cyan
+    |   |-- bright_green
+    |   |-- bright_magenta
+    |   |-- bright_red
+    |   |-- bright_white
+    |   `-- bright_yellow
+    `-- fg
+        |-- black
+        |-- blue
+        |-- cyan
+        |-- green
+        |-- magenta
+        |-- red
+        |-- white
+        |-- yellow
+        |-- bright_black
+        |-- bright_blue
+        |-- bright_cyan
+        |-- bright_green
+        |-- bright_magenta
+        |-- bright_red
+        |-- bright_white
+        `-- bright_yellow
 
 Usage:
 
-    from lib.colors import attr, fg
+    from lib import colors
 
-    print(f"{fg.bright_red}Hello, 世界{attr.reset}")
+    term = colors.init_auto()
+    print(f"{term.fg.bright_red}Hello, 世界{term.attr.reset}")
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
 License: BSD 3-Clause
@@ -58,58 +110,86 @@ class Colors:
     bright_yellow:  str = ""
 
 
-# Check if running inside of TTY and if NO_COLOR is not set.
-if sys.stdout.isatty() and os.getenv("NO_COLOR") is None:
-    attr = Attributes(
-        reset     = "\033[0m",
-        bold      = "\033[1m",
-        italic    = "\033[3m",
-        underline = "\033[4m",
-        blink     = "\033[5m",
-        reverse   = "\033[7m",
+@dataclass(frozen=True)
+class Codes:
+    """Data structure containing all attributes and colors."""
+
+    attr: Attributes = Attributes()
+    bg: Colors = Colors()
+    fg: Colors = Colors()
+
+
+def init_auto() -> Codes:
+    """Run init_on() or init_off() and return result from function.
+
+    If program is running inside of interactive TTY and 'NO_COLOR' environment
+    variable is not set use function init_on(), otherwise use init_off().
+
+    Returns:
+        Codes dataclass returned from init_on() or init_off().
+    """
+
+    if sys.stdout.isatty() and os.getenv("NO_COLOR") is None:
+        return init_on()
+
+    return init_off()
+
+
+def init_on() -> Codes:
+    """Return data structure with preset attribute and color values."""
+
+    return Codes(
+        attr=Attributes(
+            reset     = "\033[0m",
+            bold      = "\033[1m",
+            italic    = "\033[3m",
+            underline = "\033[4m",
+            blink     = "\033[5m",
+            reverse   = "\033[7m",
+        ),
+        bg=Colors(
+            black   = "\033[40m",
+            red     = "\033[41m",
+            green   = "\033[42m",
+            yellow  = "\033[43m",
+            blue    = "\033[44m",
+            magenta = "\033[45m",
+            cyan    = "\033[46m",
+            white   = "\033[47m",
+
+            bright_black   = "\033[100m",
+            bright_red     = "\033[101m",
+            bright_green   = "\033[102m",
+            bright_yellow  = "\033[103m",
+            bright_blue    = "\033[104m",
+            bright_magenta = "\033[105m",
+            bright_cyan    = "\033[106m",
+            bright_white   = "\033[107m",
+        ),
+        fg=Colors(
+            black   = "\033[30m",
+            red     = "\033[31m",
+            green   = "\033[32m",
+            yellow  = "\033[33m",
+            blue    = "\033[34m",
+            magenta = "\033[35m",
+            cyan    = "\033[36m",
+            white   = "\033[37m",
+
+            bright_black   = "\033[90m",
+            bright_red     = "\033[91m",
+            bright_green   = "\033[92m",
+            bright_yellow  = "\033[93m",
+            bright_blue    = "\033[94m",
+            bright_magenta = "\033[95m",
+            bright_cyan    = "\033[96m",
+            bright_white   = "\033[97m",
+        ),
     )
 
-    bg = Colors(
-        black   = "\033[40m",
-        red     = "\033[41m",
-        green   = "\033[42m",
-        yellow  = "\033[43m",
-        blue    = "\033[44m",
-        magenta = "\033[45m",
-        cyan    = "\033[46m",
-        white   = "\033[47m",
 
-        bright_black   = "\033[100m",
-        bright_red     = "\033[101m",
-        bright_green   = "\033[102m",
-        bright_yellow  = "\033[103m",
-        bright_blue    = "\033[104m",
-        bright_magenta = "\033[105m",
-        bright_cyan    = "\033[106m",
-        bright_white   = "\033[107m",
-    )
+def init_off() -> Codes:
+    """Return data structure with empty attribute and color values."""
 
-    fg = Colors(
-        black   = "\033[30m",
-        red     = "\033[31m",
-        green   = "\033[32m",
-        yellow  = "\033[33m",
-        blue    = "\033[34m",
-        magenta = "\033[35m",
-        cyan    = "\033[36m",
-        white   = "\033[37m",
-
-        bright_black   = "\033[90m",
-        bright_red     = "\033[91m",
-        bright_green   = "\033[92m",
-        bright_yellow  = "\033[93m",
-        bright_blue    = "\033[94m",
-        bright_magenta = "\033[95m",
-        bright_cyan    = "\033[96m",
-        bright_white   = "\033[97m",
-    )
-else:
     # Use default values, i.e. empty strings.
-    attr = Attributes()
-    bg = Colors()
-    fg = Colors()
+    return Codes()
