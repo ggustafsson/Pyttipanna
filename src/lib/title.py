@@ -1,4 +1,4 @@
-"""Title capitalization module.
+"""Title capitalization library.
 
 Contains functions used for reformatting input text following English title
 capitalization rules. First word, last word, new sentences, punctuated

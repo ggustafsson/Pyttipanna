@@ -1,4 +1,4 @@
-"""Pyttipanna DRY module.
+"""Pyttipanna DRY library.
 
 Contains miscellaneous functions that are good enough for re-use but small
 enough to not warrant its own module.
