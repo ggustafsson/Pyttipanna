@@ -31,8 +31,8 @@ import sys
 
 from collections import namedtuple
 
+from lib import colors
 from lib import pytt
-from lib.colors import attr, fg
 
 
 def setup_args() -> argparse.Namespace:
@@ -102,7 +102,7 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
     return repo(name=name, branch=branch, dirty=dirty, unpushed=unpushed)
 
 
-def git_table(repos: list):
+def git_table(term: colors.Codes, repos: list):
     """Print summary table of Git repos.
 
     State of repo is indicated through colors green (clean), yellow (unpushed)
@@ -110,6 +110,7 @@ def git_table(repos: list):
     branch names for colorless operation.
 
     Arguments:
+        term: colors.Codes containing data from colors module.
         repos: list containing dict's with Git repo states.
     """
 
@@ -118,26 +119,27 @@ def git_table(repos: list):
     for repo in repos:
         print(f"{repo.name:<{column}}", end="")
         if repo.dirty:
-            print(f"{fg.bright_red}{repo.branch}*{attr.reset}")
+            print(f"{term.fg.bright_red}{repo.branch}*{term.attr.reset}")
         elif repo.unpushed:
-            print(f"{fg.bright_yellow}{repo.branch}+{attr.reset}")
+            print(f"{term.fg.bright_yellow}{repo.branch}+{term.attr.reset}")
         else:
-            print(f"{fg.bright_green}{repo.branch}{attr.reset}")
+            print(f"{term.fg.bright_green}{repo.branch}{term.attr.reset}")
 
 
 def main():
     args = setup_args()
+    term = colors.init_auto()
 
     if not os.path.isdir(args.path):
         print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
-    print(f"{fg.bright_cyan}{args.path}:{attr.reset}")
+    print(f"{term.fg.bright_cyan}{args.path}:{term.attr.reset}")
 
     repos = pytt.git_find(args.path, args.sub_level)
     if len(repos) > 0:
         states = [git_status(repo, args.sub_level) for repo in repos]
-        git_table(states)
+        git_table(term, states)
     else:
         print("No Git repos found...")
 
