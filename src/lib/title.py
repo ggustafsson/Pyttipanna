@@ -11,6 +11,8 @@ Lowercase:
     a, an, and, as, at, but, by, en, etc, for, from,
     if, in, of, on, or, the, to, via, von, vs, with
 
+List of lowercase words can be overridden with secondary titleize() argument.
+
 Example:
 
     Input:  "tears for fears @ rule the world: the greatest hits"
@@ -20,7 +22,10 @@ Usage:
 
     from lib import title
 
-    title.titleize(string)
+    title.titleize("text")
+
+    lower = ("this", "that")
+    title.titleize("text", lower)
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
 License: BSD 3-Clause
@@ -28,11 +33,12 @@ License: BSD 3-Clause
 
 import re
 
+# XXX: Expose globally to allow for usage in test_title.py.
 _lowercase = (
     "a", "an", "and", "as", "at", "but", "by", "en", "etc", "for", "from",
-    "if", "in", "of", "on", "or", "the", "to", "via", "von", "vs", "with"
+    "if", "in", "of", "on", "or", "the", "to", "via", "von", "vs", "with",
 )
-_end_sentence = (".", ",", ":", ";", "!", "?", "&", "/", "+", "-")
+_end_sentence = (".", ",", ":", ";", "!", "?", "&", "/", "@", "+", "-")
 
 
 def title(text: str) -> str:
@@ -55,11 +61,12 @@ def title(text: str) -> str:
     )
 
 
-def titleize(text: str) -> str:
+def titleize(text: str, lower: tuple = _lowercase) -> str:
     """Capitalize string following English title capitalization rules.
 
     Arguments:
         text: str containing text to titleize.
+        lower: tuple containing all words to lowercase.
 
     Returns:
         str containing titleized text.
@@ -68,6 +75,7 @@ def titleize(text: str) -> str:
     words = text.split()
     last_word = len(words) - 1
     skip_next = False
+    result = []
 
     # Regex matching "A.Z." (or longer) abbreviation patterns.
     # XXX: Using [^\W\d_] because \w matches digits and underscore.
@@ -86,10 +94,10 @@ def titleize(text: str) -> str:
 
         # Check if new sentence, first word or last word first.
         if skip or index in (0, last_word):
-            words[index] = title(word)
-        elif str.lower(word) in _lowercase:
-            words[index] = word.lower()
+            result.append(title(word))
+        elif str.lower(word) in lower:
+            result.append(word.lower())
         else:
-            words[index] = title(word)
+            result.append(title(word))
 
-    return str.join(" ", words)
+    return str.join(" ", result)
