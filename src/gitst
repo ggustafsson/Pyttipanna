@@ -110,7 +110,7 @@ def git_table(term: colors.Codes, repos: list):
     branch names for colorless operation.
 
     Arguments:
-        term: colors.Codes containing data from colors module.
+        term: colors.Codes containing data from colors library.
         repos: list containing dict's with Git repo states.
     """
 

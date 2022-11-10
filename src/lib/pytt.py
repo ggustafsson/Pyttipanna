@@ -1,7 +1,7 @@
 """Pyttipanna DRY library.
 
 Contains miscellaneous functions that are good enough for re-use but small
-enough to not warrant its own module.
+enough to not warrant its own library.
 
 Usage:
 

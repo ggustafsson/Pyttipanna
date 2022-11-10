@@ -4,7 +4,7 @@ Contains functions used for reformatting input text following English title
 capitalization rules. First word, last word, new sentences, punctuated
 abbreviations, brackets () {} [] <>, quotes "" '', etc is handled correctly.
 Corner case proofness is very good but should NOT be expected, it is more or
-less impossible to achieve correct results on any input.
+less impossible to achieve correct results on all input variations.
 
 Lowercase:
 
