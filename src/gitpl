@@ -12,9 +12,11 @@
 #     Already up to date.
 #
 #     Pyttipanna:
-#     error: cannot pull with rebase: You have unstaged changes.
-#     error: please commit or stash them.
-#
+#     remote: Enumerating objects: 5, done.
+#     remote: Counting objects: 100% (5/5), done.
+#     remote: Compressing objects: 100% (2/2), done.
+#     remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+#     Unpacking objects: 100% (3/3), 663 bytes | 331.00 KiB/s, done.
 #     ...
 #
 # Dependencies:
