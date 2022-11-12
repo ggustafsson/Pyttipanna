@@ -77,24 +77,24 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
     proc = subprocess.run(
         ["git", "-C", repo_dir.path, "branch", "--show-current"],
         capture_output=True,
-        check=False
+        check=True
     )
     branch = proc.stdout.decode().strip()
 
     proc = subprocess.run(
         ["git", "-C", repo_dir.path, "status", "--porcelain"],
         capture_output=True,
-        check=False
+        check=True
     )
-    dirty = bool(len(proc.stdout) > 0)
+    dirty = bool(proc.stdout)
 
     if not dirty:
         proc = subprocess.run(
             ["git", "-C", repo_dir.path, "log", "-n", "1", "@{upstream}.."],
             capture_output=True,
-            check=False
+            check=True
         )
-        unpushed = bool(len(proc.stdout) > 0)
+        unpushed = bool(proc.stdout)
     else:
         unpushed = False
 
@@ -137,7 +137,7 @@ def main():
     print(f"{term.fg.bright_cyan}{args.path}:{term.attr.reset}")
 
     repos = pytt.git_find(args.path, args.sub_level)
-    if len(repos) > 0:
+    if repos:
         states = [git_status(repo, args.sub_level) for repo in repos]
         git_table(term, states)
     else:
