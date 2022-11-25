@@ -80,7 +80,11 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
         capture_output=True,
         check=True
     )
-    branch = proc.stdout.decode().strip()
+    if proc.stdout:
+        branch = proc.stdout.decode().strip()
+    else:
+        # Detached HEAD state has no branch name.
+        branch = "?"
 
     proc = subprocess.run(
         ["git", "-C", repo_dir.path, "status", "--porcelain"],
@@ -93,7 +97,8 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
         proc = subprocess.run(
             ["git", "-C", repo_dir.path, "log", "-n", "1", "@{upstream}.."],
             capture_output=True,
-            check=True
+            # Detached HEAD state leads to exit status 128.
+            check=False
         )
         unpushed = bool(proc.stdout)
     else:
