@@ -17,14 +17,14 @@ import os
 
 
 # Used in "gitpl" and "gitst".
-def git_find(dir_: str, sub_level: bool = False) -> tuple:
+def git_find(path: str, sub_level: bool = False) -> tuple:
     """Find Git repos under directory.
 
     Checks if ".git" directory exists under sub-directories. Optionally checks
     one sub-level down.
 
     Arguments:
-        dir_: os.DirEntry containing directory to search.
+        path: str containing directory path to search.
         sub_level: bool that sets if sub-level directories should be searched.
 
     Returns:
@@ -33,16 +33,16 @@ def git_find(dir_: str, sub_level: bool = False) -> tuple:
 
     if sub_level:
         result = []
-        for subdir in os.scandir(dir_):
+        for subdir in os.scandir(path):
             if not os.path.isdir(subdir.path):
                 continue
 
-            for subdir2 in os.scandir(subdir.path):
-                if os.path.isdir(f"{subdir2.path}{os.sep}.git"):
-                    result.append(subdir2)
+            for subdir in os.scandir(subdir.path):
+                if os.path.isdir(f"{subdir.path}{os.sep}.git"):
+                    result.append(subdir)
     else:
         result = [
-            subdir for subdir in os.scandir(dir_)
+            subdir for subdir in os.scandir(path)
             if os.path.isdir(f"{subdir.path}{os.sep}.git")
         ]
-    return tuple(sorted(result, key=lambda l: l.path))
+    return tuple(sorted(result, key=lambda item: item.path))
