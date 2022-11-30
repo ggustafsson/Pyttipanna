@@ -58,17 +58,12 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-async def git_pull(
-    ansi: colors.Codes,
-    repo_dir: os.DirEntry,
-    sub_level: bool = False
-):
+async def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
     """Fetch Git repo changes.
 
     Executes "git pull" and prints command output.
 
     Arguments:
-        ansi: colors.Codes containing data from colors library.
         repo_dir: os.DirEntry containing Git repo directory.
         sub_level: bool that sets if name should contain parent directory.
     """
@@ -93,9 +88,11 @@ async def git_pull(
         print(stderr.decode().rstrip())
 
 
+ansi = colors.init_auto()
+
+
 async def main():
     args = setup_args()
-    ansi = colors.init_auto()
 
     if not os.path.isdir(args.path):
         print(f"Directory '{args.path}' not found! Exiting...")
@@ -105,7 +102,7 @@ async def main():
 
     repos = pytt.git_find(args.path, args.sub_level)
     if repos:
-        tasks = [git_pull(ansi, repo, args.sub_level) for repo in repos]
+        tasks = [git_pull(repo, args.sub_level) for repo in repos]
         await asyncio.gather(*tasks)
     else:
         print("No Git repos found...")
