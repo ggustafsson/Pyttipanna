@@ -108,7 +108,7 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
     return repo(name=name, branch=branch, dirty=dirty, unpushed=unpushed)
 
 
-def git_table(ansi: colors.Codes, repos: list):
+def git_table(repos: list):
     """Print summary table of Git repos.
 
     State of repo is indicated through colors green (clean), yellow (unpushed)
@@ -116,7 +116,6 @@ def git_table(ansi: colors.Codes, repos: list):
     branch names for colorless operation.
 
     Arguments:
-        ansi: colors.Codes containing data from colors library.
         repos: list containing dict's with Git repo states.
     """
 
@@ -132,9 +131,11 @@ def git_table(ansi: colors.Codes, repos: list):
             print(f"{ansi.fg.bright_green}{repo.branch}{ansi.attr.reset}")
 
 
+ansi = colors.init_auto()
+
+
 def main():
     args = setup_args()
-    ansi = colors.init_auto()
 
     if not os.path.isdir(args.path):
         print(f"Directory '{args.path}' not found! Exiting...")
@@ -145,7 +146,7 @@ def main():
     repos = pytt.git_find(args.path, args.sub_level)
     if repos:
         states = [git_status(repo, args.sub_level) for repo in repos]
-        git_table(ansi, states)
+        git_table(states)
     else:
         print("No Git repos found...")
 
