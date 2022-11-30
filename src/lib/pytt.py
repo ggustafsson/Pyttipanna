@@ -37,9 +37,9 @@ def git_find(path: str, sub_level: bool = False) -> tuple:
             if not os.path.isdir(subdir.path):
                 continue
 
-            for subdir in os.scandir(subdir.path):
-                if os.path.isdir(f"{subdir.path}{os.sep}.git"):
-                    result.append(subdir)
+            for subdir2 in os.scandir(subdir.path):
+                if os.path.isdir(f"{subdir2.path}{os.sep}.git"):
+                    result.append(subdir2)
     else:
         result = [
             subdir for subdir in os.scandir(path)
