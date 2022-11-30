@@ -55,7 +55,7 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def git_status(repo_dir: os.DirEntry, sub_level: bool = False) -> tuple:
+def git_status(repo_dir: os.DirEntry, sub_level: bool) -> tuple:
     """Check Git repo status.
 
     Retrieve information about current branch and state (dirty/unpushed).
