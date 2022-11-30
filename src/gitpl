@@ -58,7 +58,7 @@ def setup_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-async def git_pull(repo_dir: os.DirEntry, sub_level: bool = False):
+async def git_pull(repo_dir: os.DirEntry, sub_level: bool):
     """Fetch Git repo changes.
 
     Executes "git pull" and prints command output.
