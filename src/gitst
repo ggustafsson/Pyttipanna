@@ -35,6 +35,8 @@ from collections import namedtuple
 from lib import colors
 from lib import pytt
 
+ansi = colors.init_auto()
+
 
 def setup_args() -> argparse.Namespace:
     """Configure argument parsing."""
@@ -129,9 +131,6 @@ def git_table(repos: list):
             print(f"{ansi.fg.bright_yellow}{repo.branch}+{ansi.attr.reset}")
         else:
             print(f"{ansi.fg.bright_green}{repo.branch}{ansi.attr.reset}")
-
-
-ansi = colors.init_auto()
 
 
 def main():
