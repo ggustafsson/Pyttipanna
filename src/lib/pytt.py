@@ -17,7 +17,7 @@ import os
 
 
 # Used in "gitpl" and "gitst".
-def git_find(path: str, sub_level: bool = False) -> tuple:
+def git_find(path: str, sub_level: bool) -> tuple:
     """Find Git repos under directory.
 
     Checks if ".git" directory exists under sub-directories. Optionally checks
