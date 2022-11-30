@@ -60,8 +60,8 @@ Usage:
 
     from lib import colors
 
-    term = colors.init_auto()
-    print(f"{term.fg.bright_red}Hello, 世界{term.attr.reset}")
+    ansi = colors.init_auto()
+    print(f"{ansi.fg.bright_red}Hello, 世界{ansi.attr.reset}")
 
 Author: Göran Gustafsson <gustafsson.g@gmail.com>
 License: BSD 3-Clause
