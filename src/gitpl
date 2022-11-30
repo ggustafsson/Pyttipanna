@@ -59,7 +59,7 @@ def setup_args() -> argparse.Namespace:
 
 
 async def git_pull(
-    term: colors.Codes,
+    ansi: colors.Codes,
     repo_dir: os.DirEntry,
     sub_level: bool = False
 ):
@@ -68,7 +68,7 @@ async def git_pull(
     Executes "git pull" and prints command output.
 
     Arguments:
-        term: colors.Codes containing data from colors library.
+        ansi: colors.Codes containing data from colors library.
         repo_dir: os.DirEntry containing Git repo directory.
         sub_level: bool that sets if name should contain parent directory.
     """
@@ -86,7 +86,7 @@ async def git_pull(
     )
     stdout, stderr = await proc.communicate()
 
-    print(f"\n{term.fg.bright_cyan}{name}:{term.attr.reset}")
+    print(f"\n{ansi.fg.bright_cyan}{name}:{ansi.attr.reset}")
     if stdout:
         print(stdout.decode().rstrip())
     if stderr:
@@ -95,7 +95,7 @@ async def git_pull(
 
 async def main():
     args = setup_args()
-    term = colors.init_auto()
+    ansi = colors.init_auto()
 
     if not os.path.isdir(args.path):
         print(f"Directory '{args.path}' not found! Exiting...")
@@ -105,7 +105,7 @@ async def main():
 
     repos = pytt.git_find(args.path, args.sub_level)
     if repos:
-        tasks = [git_pull(term, repo, args.sub_level) for repo in repos]
+        tasks = [git_pull(ansi, repo, args.sub_level) for repo in repos]
         await asyncio.gather(*tasks)
     else:
         print("No Git repos found...")
