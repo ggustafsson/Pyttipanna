@@ -38,6 +38,8 @@ import sys
 from lib import colors
 from lib import pytt
 
+ansi = colors.init_auto()
+
 
 def setup_args() -> argparse.Namespace:
     """Configure argument parsing."""
@@ -86,9 +88,6 @@ async def git_pull(repo_dir: os.DirEntry, sub_level: bool):
         print(stdout.decode().rstrip())
     if stderr:
         print(stderr.decode().rstrip())
-
-
-ansi = colors.init_auto()
 
 
 async def main():
