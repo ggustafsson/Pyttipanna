@@ -38,8 +38,6 @@ import sys
 from lib import colors
 from lib import pytt
 
-ansi = colors.init_auto()
-
 
 def setup_args() -> argparse.Namespace:
     """Configure argument parsing."""
@@ -83,7 +81,7 @@ async def git_pull(repo_dir: os.DirEntry, sub_level: bool):
     )
     stdout, stderr = await proc.communicate()
 
-    print(f"\n{ansi.fg.bright_cyan}{name}:{ansi.attr.reset}")
+    print(f"\n{colors.fg.bright_cyan}{name}:{colors.attr.reset}")
     if stdout:
         print(stdout.decode().rstrip())
     if stderr:
