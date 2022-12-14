@@ -35,8 +35,6 @@ from collections import namedtuple
 from lib import colors
 from lib import pytt
 
-ansi = colors.init_auto()
-
 
 def setup_args() -> argparse.Namespace:
     """Configure argument parsing."""
@@ -126,11 +124,12 @@ def git_table(repos: list):
     for repo in repos:
         print(f"{repo.name:<{column}}", end="")
         if repo.dirty:
-            print(f"{ansi.fg.bright_red}{repo.branch}*{ansi.attr.reset}")
+            print(f"{colors.fg.bright_red}{repo.branch}*{colors.attr.reset}")
         elif repo.unpushed:
-            print(f"{ansi.fg.bright_yellow}{repo.branch}+{ansi.attr.reset}")
+            print(f"{colors.fg.bright_yellow}{repo.branch}+"
+                  f"{colors.attr.reset}")
         else:
-            print(f"{ansi.fg.bright_green}{repo.branch}{ansi.attr.reset}")
+            print(f"{colors.fg.bright_green}{repo.branch}{colors.attr.reset}")
 
 
 def main():
@@ -140,7 +139,7 @@ def main():
         print(f"Directory '{args.path}' not found! Exiting...")
         sys.exit(1)
 
-    print(f"{ansi.fg.bright_cyan}{args.path}:{ansi.attr.reset}")
+    print(f"{colors.fg.bright_cyan}{args.path}:{colors.attr.reset}")
 
     repos = pytt.git_find(args.path, args.sub_level)
     if repos:
