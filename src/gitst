@@ -108,7 +108,7 @@ def git_status(repo_dir: os.DirEntry, sub_level: bool) -> tuple:
     return repo(name=name, branch=branch, dirty=dirty, unpushed=unpushed)
 
 
-def git_table(repos: list):
+def git_table(repos: list) -> None:
     """Print summary table of Git repos.
 
     State of repo is indicated through colors green (clean), yellow (unpushed)
