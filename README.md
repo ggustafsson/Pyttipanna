@@ -15,6 +15,5 @@
 ## Sister Projects
 
 - [Golang: Godis](https://github.com/ggustafsson/godis)
-- [Haskell: Haxxell](https://github.com/ggustafsson/Haxxell)
 - [Rust: Skrot](https://github.com/ggustafsson/Skrot)
 - [Zsh: Kjell](https://github.com/ggustafsson/Kjell)
