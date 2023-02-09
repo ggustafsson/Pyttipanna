@@ -74,8 +74,13 @@ async def git_pull(repo_dir: os.DirEntry, sub_level: bool) -> None:
     else:
         name = repo_dir.name
 
+    if sys.stdout.isatty() and os.getenv("NO_COLOR") is None:
+        git_cmd = ["git", "-c", "color.ui=always", "-C", repo_dir.path, "pull"]
+    else:
+        git_cmd = ["git", "-C", repo_dir.path, "pull"]
+
     proc = await asyncio.create_subprocess_exec(
-        "git", "-C", repo_dir.path, "pull",
+        *git_cmd,
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE
     )
