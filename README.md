@@ -16,4 +16,5 @@
 
 - [Golang: Godis](https://github.com/ggustafsson/godis)
 - [Rust: Skrot](https://github.com/ggustafsson/Skrot)
+- [Swift: Kvickt](https://github.com/ggustafsson/Kvickt)
 - [Zsh: Kjell](https://github.com/ggustafsson/Kjell)
